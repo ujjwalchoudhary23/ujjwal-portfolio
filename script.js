@@ -1,242 +1,166 @@
-/* ================================
-Ujjwal Choudhary Portfolio
-JavaScript
-================================ */
-
-/* Mobile Navigation */
+// ================= MOBILE MENU =================
 
 const menuBtn = document.getElementById("menu-btn");
 const navLinks = document.getElementById("nav-links");
 
 if (menuBtn && navLinks) {
+    menuBtn.addEventListener("click", () => {
+        navLinks.classList.toggle("active");
+    });
 
-
-menuBtn.addEventListener("click", () => {
-    navLinks.classList.toggle("active");
-});
-
-
+    document.querySelectorAll(".nav-link").forEach(link => {
+        link.addEventListener("click", () => {
+            navLinks.classList.remove("active");
+        });
+    });
 }
 
-/* Close menu after clicking a link */
 
-document.querySelectorAll(".nav-link").forEach(link => {
-
-
-link.addEventListener("click", () => {
-
-    if (navLinks) {
-        navLinks.classList.remove("active");
-    }
-
-});
-
-
-});
-
-/* Smooth scrolling */
-
-document.querySelectorAll('a[href^="#"]').forEach(link => {
-
-
-link.addEventListener("click", function(event) {
-
-    const target = document.querySelector(
-        this.getAttribute("href")
-    );
-
-    if (target) {
-
-        event.preventDefault();
-
-        target.scrollIntoView({
-            behavior: "smooth"
-        });
-
-    }
-
-});
-
-
-});
-
-/* Typing Animation */
+// ================= TYPING EFFECT =================
 
 const typingText = document.getElementById("typing-text");
 
-const words = [
-"AIDD Student",
-"Web Developer",
-"AI Enthusiast",
-"Technology Lover"
+const roles = [
+    "AI & Data Science Student",
+    "Python Developer",
+    "AI Enthusiast",
+    "Future Data Scientist"
 ];
 
-let wordIndex = 0;
+let roleIndex = 0;
 let charIndex = 0;
 let deleting = false;
 
 function typeEffect() {
 
+    if (!typingText) return;
 
-if (!typingText) return;
+    const currentRole = roles[roleIndex];
 
-const currentWord = words[wordIndex];
+    if (!deleting) {
+        typingText.textContent =
+            currentRole.substring(0, charIndex + 1);
 
-if (!deleting) {
+        charIndex++;
 
-    typingText.textContent =
-        currentWord.substring(0, charIndex + 1);
+        if (charIndex === currentRole.length) {
+            deleting = true;
 
-    charIndex++;
+            setTimeout(typeEffect, 1600);
+            return;
+        }
 
-    if (charIndex === currentWord.length) {
+    } else {
 
-        deleting = true;
+        typingText.textContent =
+            currentRole.substring(0, charIndex - 1);
 
-        setTimeout(typeEffect, 1500);
+        charIndex--;
 
-        return;
+        if (charIndex === 0) {
+            deleting = false;
+
+            roleIndex =
+                (roleIndex + 1) % roles.length;
+        }
     }
 
-} else {
-
-    typingText.textContent =
-        currentWord.substring(0, charIndex - 1);
-
-    charIndex--;
-
-    if (charIndex === 0) {
-
-        deleting = false;
-
-        wordIndex =
-            (wordIndex + 1) % words.length;
-
-    }
-
-}
-
-setTimeout(
-    typeEffect,
-    deleting ? 60 : 100
-);
-
-
+    setTimeout(
+        typeEffect,
+        deleting ? 55 : 90
+    );
 }
 
 typeEffect();
 
-/* Back to Top Button */
 
-const topButton = document.getElementById("top-btn");
+// ================= SCROLL REVEAL =================
+
+const revealElements =
+    document.querySelectorAll(".reveal");
+
+function revealOnScroll() {
+
+    const windowHeight =
+        window.innerHeight;
+
+    revealElements.forEach(element => {
+
+        const elementTop =
+            element.getBoundingClientRect().top;
+
+        if (elementTop < windowHeight - 100) {
+            element.classList.add("visible");
+        }
+    });
+}
+
+window.addEventListener(
+    "scroll",
+    revealOnScroll
+);
+
+revealOnScroll();
+
+
+// ================= BACK TO TOP =================
+
+const topButton =
+    document.getElementById("top-btn");
 
 window.addEventListener("scroll", () => {
 
+    if (!topButton) return;
 
-if (!topButton) return;
-
-if (window.scrollY > 400) {
-
-    topButton.classList.add("show");
-
-} else {
-
-    topButton.classList.remove("show");
-
-}
-
-
+    if (window.scrollY > 500) {
+        topButton.classList.add("show");
+    } else {
+        topButton.classList.remove("show");
+    }
 });
 
 if (topButton) {
 
+    topButton.addEventListener("click", () => {
 
-topButton.addEventListener("click", () => {
-
-    window.scrollTo({
-        top: 0,
-        behavior: "smooth"
-    });
-
-});
-
-
-}
-
-/* Reveal sections on scroll */
-
-const sections =
-document.querySelectorAll(".reveal");
-
-const observer =
-new IntersectionObserver(
-
-
-    (entries) => {
-
-        entries.forEach(entry => {
-
-            if (entry.isIntersecting) {
-
-                entry.target.classList.add("visible");
-
-            }
-
+        window.scrollTo({
+            top: 0,
+            behavior: "smooth"
         });
 
-    },
-
-    {
-        threshold: 0.15
-    }
-
-);
-
-
-sections.forEach(section => {
-
-
-observer.observe(section);
-
-
-});
-
-/* Current year */
-
-const year =
-document.getElementById("year");
-
-if (year) {
-
-
-year.textContent =
-    new Date().getFullYear();
-
+    });
 
 }
 
-/* Contact Form */
+
+// ================= CONTACT FORM =================
 
 const contactForm =
-document.getElementById("contact-form");
+    document.getElementById("contact-form");
 
 if (contactForm) {
 
-
-contactForm.addEventListener(
-    "submit",
-    function(event) {
+    contactForm.addEventListener("submit", event => {
 
         event.preventDefault();
 
         alert(
-            "Thank you for contacting me! I will get back to you soon."
+            "Thanks for reaching out! I'll get back to you soon."
         );
 
         contactForm.reset();
 
-    }
-);
+    });
+
+}
 
 
+// ================= CURRENT YEAR =================
+
+const year =
+    document.getElementById("year");
+
+if (year) {
+    year.textContent =
+        new Date().getFullYear();
 }
