@@ -135,20 +135,79 @@ if (topButton) {
 
 // ================= CONTACT FORM =================
 
+// ================= CONTACT FORM =================
+
 const contactForm =
     document.getElementById("contact-form");
 
+const formStatus =
+    document.getElementById("form-status");
+
+const submitButton =
+    document.getElementById("submit-btn");
+
 if (contactForm) {
 
-    contactForm.addEventListener("submit", event => {
+    contactForm.addEventListener("submit", async (event) => {
 
         event.preventDefault();
 
-        alert(
-            "Thanks for reaching out! I'll get back to you soon."
-        );
+        submitButton.disabled = true;
 
-        contactForm.reset();
+        submitButton.textContent = "Sending...";
+
+        formStatus.textContent = "";
+
+        const formData =
+            new FormData(contactForm);
+
+        try {
+
+            const response =
+                await fetch(
+                    contactForm.action,
+                    {
+                        method: "POST",
+                        body: formData,
+                        headers: {
+                            "Accept": "application/json"
+                        }
+                    }
+                );
+
+            if (response.ok) {
+
+                formStatus.textContent =
+                    "✓ Message sent successfully! I'll get back to you soon.";
+
+                formStatus.className =
+                    "form-status success";
+
+                contactForm.reset();
+
+            } else {
+
+                throw new Error(
+                    "Form submission failed"
+                );
+
+            }
+
+        } catch (error) {
+
+            formStatus.textContent =
+                "Something went wrong. Please try again.";
+
+            formStatus.className =
+                "form-status error";
+
+        } finally {
+
+            submitButton.disabled = false;
+
+            submitButton.textContent =
+                "Send Message";
+        }
 
     });
 
