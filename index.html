@@ -331,7 +331,51 @@
                 Feel free to get in touch.
             </p>
 
-            <form id="contact-form">
+            <form
+    id="contact-form"
+    action="https://formspree.io/f/YOUR_FORM_ID"
+    method="POST"
+>
+
+    <input
+        type="text"
+        name="name"
+        placeholder="Your Name"
+        aria-label="Your Name"
+        required
+    >
+
+    <input
+        type="email"
+        name="email"
+        placeholder="Your Email"
+        aria-label="Your Email"
+        required
+    >
+
+    <textarea
+        name="message"
+        placeholder="Your Message"
+        aria-label="Your Message"
+        rows="5"
+        required
+    ></textarea>
+
+    <button
+        type="submit"
+        class="btn"
+        id="submit-btn"
+    >
+        Send Message
+    </button>
+
+    <p
+        id="form-status"
+        class="form-status"
+        aria-live="polite"
+    ></p>
+
+</form>
 
                 <input
                     type="text"
